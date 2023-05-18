@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import Map from '../../components/map/map';
 
 export default function ContactsPage() {
   return (
@@ -47,7 +48,7 @@ export default function ContactsPage() {
             </dl>
             <div className="contacts__map">
               <div className="map">
-                <div className="map__container"></div>
+                <Map />
               </div>
             </div>
           </div>
