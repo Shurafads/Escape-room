@@ -1,7 +1,20 @@
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { TQuestInfo } from '../../types/quests-info';
 
-export default function QuestPage() {
+type QuestPageProps = {
+  questsInfo: TQuestInfo[];
+}
+
+export default function QuestPage({questsInfo}: QuestPageProps) {
+
+  const params = useParams();
+  const currentOffer = questsInfo.find((quest) => quest.id === params.id);
+
+  if (!currentOffer) {
+    return null;
+  }
+
   return (
     <>
       <Helmet>
@@ -16,22 +29,25 @@ export default function QuestPage() {
         </div>
         <div className="container container--size-l">
           <div className="quest-page__content">
-            <h1 className="title title--size-l title--uppercase quest-page__title">Маньяк</h1>
-            <p className="subtitle quest-page__subtitle"><span className="visually-hidden">Жанр:</span>Ужасы
+            <h1 className="title title--size-l title--uppercase quest-page__title">{currentOffer.title}</h1>
+            <p className="subtitle quest-page__subtitle">
+              <span className="visually-hidden">Жанр:</span>
+              {currentOffer.type}
             </p>
             <ul className="tags tags--size-l quest-page__tags">
               <li className="tags__item">
                 <svg width="11" height="14" aria-hidden="true">
                   <use xlinkHref="#icon-person"></use>
-                </svg>3&ndash;6&nbsp;чел
+                </svg>3&ndash;{currentOffer.peopleMinMax}&nbsp;чел
               </li>
               <li className="tags__item">
                 <svg width="14" height="14" aria-hidden="true">
                   <use xlinkHref="#icon-level"></use>
-                </svg>Средний
+                </svg>
+                {currentOffer.level}
               </li>
             </ul>
-            <p className="quest-page__description">В&nbsp;комнате с&nbsp;приглушённым светом несколько человек, незнакомых друг с&nbsp;другом, приходят в&nbsp;себя. Никто не&nbsp;помнит, что произошло прошлым вечером. Руки и&nbsp;ноги связаны, но&nbsp;одному из&nbsp;вас получилось освободиться. На&nbsp;стене висит пугающий таймер и&nbsp;запущен отсчёт 60&nbsp;минут. Сможете&nbsp;ли вы&nbsp;разобраться в&nbsp;стрессовой ситуации, помочь другим, разобраться что произошло и&nbsp;выбраться из&nbsp;комнаты?</p>
+            <p className="quest-page__description">{currentOffer.description}</p>
             <Link className="btn btn--accent btn--cta quest-page__btn" to="booking.html">Забронировать</Link>
           </div>
         </div>

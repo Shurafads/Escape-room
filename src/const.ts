@@ -12,3 +12,9 @@ export const MapParam = {
   longitude: 30.317359,
   zoom: 15,
 };
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}

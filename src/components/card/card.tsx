@@ -26,7 +26,7 @@ export default function Card({ quest }: CardProps) {
       </div>
       <div className="quest-card__content">
         <div className="quest-card__info-wrapper">
-          <Link className="quest-card__link" to={AppRoute.Quest}>
+          <Link className="quest-card__link" to={`${AppRoute.Quest}/${quest.id}`}>
             {quest.title}
           </Link>
         </div>

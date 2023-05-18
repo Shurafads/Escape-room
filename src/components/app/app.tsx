@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import MainPage from '../../pages/main-page/main-page';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import BookingPage from '../../pages/booking-page/booking-page';
@@ -11,13 +11,16 @@ import MyQuestsPage from '../../pages/my-quests-page/my-quests-page';
 import QuestPage from '../../pages/quest-page/quest-page';
 import { HelmetProvider } from 'react-helmet-async';
 import { TQuests } from '../../types/quests';
-
+import { TQuestInfo } from '../../types/quests-info';
+import PrivateRoute from '../private-route/private-route';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
 
 type AppProps = {
   quests: TQuests[];
+  questsInfo: TQuestInfo[];
 }
 
-function App({quests}: AppProps): JSX.Element {
+function App({quests, questsInfo}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <HelmetProvider>
@@ -28,8 +31,14 @@ function App({quests}: AppProps): JSX.Element {
             <Route path={AppRoute.Booking} element={<BookingPage />}/>
             <Route path={AppRoute.Contacts} element={<ContactsPage />}/>
             <Route path={AppRoute.Login} element={<LoginPage />}/>
-            <Route path={AppRoute.MyQuests} element={<MyQuestsPage />}/>
-            <Route path={AppRoute.Quest} element={<QuestPage />}/>
+            <Route path={`${AppRoute.Quest}/:id`} element={<QuestPage questsInfo={questsInfo} />}/>
+            <Route path={AppRoute.MyQuests} element={
+              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+                <MyQuestsPage />
+              </PrivateRoute>
+            }
+            />
+            <Route path='*' element={<NotFoundPage />}/>
           </Routes>
           <Footer />
         </div>

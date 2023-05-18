@@ -5,9 +5,7 @@ export type TQuestInfo = {
   previewImgWebp: string;
   level: string;
   type: string;
-  peopleMinMax: [
-    number
-  ];
+  peopleMinMax: number[];
   description: string;
   coverImg: string;
   coverImgWebp: string;
