@@ -1,14 +1,14 @@
-import { TQuests } from '../../types/quests';
+import { useAppSelector } from '../../store';
+import { getQuests } from '../../store/quests-data/quests-data-selectors';
 import Card from '../card/card';
 
-type CardListProps = {
-  quests: TQuests[];
-};
+export default function CardList() {
 
-export default function CardList({ quests }: CardListProps) {
+  const questsList = useAppSelector(getQuests);
+
   return (
     <div className="cards-grid">
-      {quests && quests.map((quest) => <Card key={quest.id} quest={quest} />)}
+      {questsList.map((quest) => <Card key={quest.id} quest={quest} />)}
     </div>
   );
 }

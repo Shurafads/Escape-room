@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import { TQuests } from '../../types/quests';
+import { TQuest } from '../../types/quests';
 
 type CardProps = {
-  quest: TQuests;
-};
+  quest: TQuest;
+}
 
-export default function Card({ quest }: CardProps) {
+export default function Card({quest}: CardProps) {
   return (
     <div className="quest-card">
       <div className="quest-card__img">
@@ -26,7 +25,7 @@ export default function Card({ quest }: CardProps) {
       </div>
       <div className="quest-card__content">
         <div className="quest-card__info-wrapper">
-          <Link className="quest-card__link" to={`${AppRoute.Quest}/${quest.id}`}>
+          <Link className="quest-card__link" to={`/quest/${quest.id}`}>
             {quest.title}
           </Link>
         </div>
@@ -35,7 +34,7 @@ export default function Card({ quest }: CardProps) {
             <svg width="11" height="14" aria-hidden="true">
               <use xlinkHref="#icon-person"></use>
             </svg>
-            2&ndash;{quest.peopleMinMax}&nbsp;чел
+            {quest.peopleMinMax[0]}&ndash;{quest.peopleMinMax[1]}&nbsp;чел
           </li>
           <li className="tags__item">
             <svg width="14" height="14" aria-hidden="true">

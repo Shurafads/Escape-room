@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import CardList from '../../components/card-list/card-list';
-import { TQuests } from '../../types/quests';
+import FilterForm from '../../components/filter-form/filter-form';
+import { getQuests } from '../../store/quests-data/quests-data-selectors';
+import { useAppSelector } from '../../store';
+import NoCardList from '../../components/no-card-list/no-card-list';
 
-type MainPageProps = {
-  quests: TQuests[];
-}
+export default function MainPage() {
 
-export default function MainPage({quests}: MainPageProps) {
+  const questsList = useAppSelector(getQuests);
+  const isQuests = questsList.length > 0;
+
   return (
     <>
       <Helmet>
@@ -20,89 +23,10 @@ export default function MainPage({quests}: MainPageProps) {
             <h2 className="title title--size-m page-content__title">Выберите тематику</h2>
           </div>
           <div className="page-content__item">
-            <form className="filter" action="#" method="get">
-              <fieldset className="filter__section">
-                <legend className="visually-hidden">Тематика</legend>
-                <ul className="filter__list">
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="all" defaultChecked/>
-                    <label className="filter__label" htmlFor="all">
-                      <svg className="filter__icon" width="26" height="30" aria-hidden="true">
-                        <use xlinkHref="#icon-all-quests"></use>
-                      </svg><span className="filter__label-text">Все квесты</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="adventure"/>
-                    <label className="filter__label" htmlFor="adventure">
-                      <svg className="filter__icon" width="36" height="30" aria-hidden="true">
-                        <use xlinkHref="#icon-adventure"></use>
-                      </svg><span className="filter__label-text">Приключения</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="horror"/>
-                    <label className="filter__label" htmlFor="horror">
-                      <svg className="filter__icon" width="30" height="30" aria-hidden="true">
-                        <use xlinkHref="#icon-horror"></use>
-                      </svg><span className="filter__label-text">Ужасы</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="mystic"/>
-                    <label className="filter__label" htmlFor="mystic">
-                      <svg className="filter__icon" width="30" height="30" aria-hidden="true">
-                        <use xlinkHref="#icon-mystic"></use>
-                      </svg><span className="filter__label-text">Мистика</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="detective"/>
-                    <label className="filter__label" htmlFor="detective">
-                      <svg className="filter__icon" width="40" height="30" aria-hidden="true">
-                        <use xlinkHref="#icon-detective"></use>
-                      </svg><span className="filter__label-text">Детектив</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="type" id="sciFi"/>
-                    <label className="filter__label" htmlFor="sciFi">
-                      <svg className="filter__icon" width="28" height="30" aria-hidden="true">
-                        <use xlinkHref="#icon-sci-fi"></use>
-                      </svg><span className="filter__label-text">Sci-fi</span>
-                    </label>
-                  </li>
-                </ul>
-              </fieldset>
-              <fieldset className="filter__section">
-                <legend className="visually-hidden">Сложность</legend>
-                <ul className="filter__list">
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="any" defaultChecked/>
-                    <label className="filter__label" htmlFor="any"><span className="filter__label-text">Любой</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="easy"/>
-                    <label className="filter__label" htmlFor="easy"><span className="filter__label-text">Лёгкий</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="middle"/>
-                    <label className="filter__label" htmlFor="middle"><span className="filter__label-text">Средний</span>
-                    </label>
-                  </li>
-                  <li className="filter__item">
-                    <input type="radio" name="level" id="hard"/>
-                    <label className="filter__label" htmlFor="hard"><span className="filter__label-text">Сложный</span>
-                    </label>
-                  </li>
-                </ul>
-              </fieldset>
-            </form>
+            <FilterForm />
           </div>
           <h2 className="title visually-hidden">Выберите квест</h2>
-          <CardList quests={quests}/>
+          {isQuests ? <CardList /> : <NoCardList />}
         </div>
       </main>
     </>

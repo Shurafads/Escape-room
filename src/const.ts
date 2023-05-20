@@ -1,16 +1,21 @@
 export enum AppRoute {
   Main = '/',
-  Booking = '/booking',
+  Booking = '/quest/:id/booking',
   Contacts = '/contacts',
   Login = '/login',
   MyQuests = '/my-quests',
-  Quest = '/quest',
+  Quest = '/quest/:id',
 }
 
 export const MapParam = {
-  latitude: 59.968322,
-  longitude: 30.317359,
-  zoom: 15,
+  latitude: 59.939099,
+  longitude: 30.315877,
+  zoom: 10,
+};
+
+export const ContactsMapParam = {
+  lat: 59.968322,
+  lng: 30.317359
 };
 
 export enum AuthorizationStatus {
@@ -18,3 +23,15 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export enum NameSpace {
+  User = 'USER',
+  UserProcess = 'USER_PROCESS',
+  Quests = 'QUESTS',
+}
+
+export enum ApiRoute {
+  Quests = '/quest',
+}
+
+export const URL = 'https://grading.design.pages.academy/v1/escape-room/';

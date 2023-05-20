@@ -1,7 +1,7 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useRef } from 'react';
-import { MapParam } from '../../const';
+import { ContactsMapParam, MapParam } from '../../const';
 import { useEffect } from 'react';
 
 export default function Map() {
@@ -24,7 +24,7 @@ export default function Map() {
         zoom: MapParam.zoom
       };
 
-      const myMap = leaflet.map(mapRef.current, mapOptions);
+      const cityMap = leaflet.map(mapRef.current, mapOptions);
 
       leaflet
         .tileLayer(
@@ -33,12 +33,12 @@ export default function Map() {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</  a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
           },
         )
-        .addTo(myMap);
+        .addTo(cityMap);
 
       leaflet
-        .marker(mapOptions.center, {
+        .marker(ContactsMapParam, {
           icon: activeMapIcon
-        }).addTo(myMap);
+        }).addTo(cityMap);
 
       isRenderedRef.current = true;
     }

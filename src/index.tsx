@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import App from './components/app/app';
-import { Quests } from './mocks/quests';
-import { QuestInfo } from './mocks/quests-info';
+import { store } from './store';
+import { ToastContainer } from 'react-toastify';
+import { fetchQuestsAction } from './store/api-action';
+import 'react-toastify/dist/ReactToastify.css';
+
+store.dispatch(fetchQuestsAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -10,6 +15,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App quests={Quests} questsInfo={QuestInfo}/>
+    <Provider store={store}>
+      <ToastContainer />
+      <App />
+    </Provider>
   </React.StrictMode>,
 );

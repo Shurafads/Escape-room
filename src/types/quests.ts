@@ -1,4 +1,4 @@
-export type TQuests = {
+export type TQuest = {
   id: string;
   title: string;
   previewImg: string;
