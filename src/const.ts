@@ -28,10 +28,20 @@ export enum NameSpace {
   User = 'USER',
   UserProcess = 'USER_PROCESS',
   Quests = 'QUESTS',
+  Booking = 'BOOKING',
 }
 
 export enum ApiRoute {
   Quests = '/quest',
+  Login = '/login',
 }
+
+export const QuestType = {
+  adventure: 'Приключения',
+  horror: 'Ужасы',
+  mystic: 'Мистика',
+  detective: 'Детектив',
+  'Sci-fi': 'Sci-fi',
+};
 
 export const URL = 'https://grading.design.pages.academy/v1/escape-room/';

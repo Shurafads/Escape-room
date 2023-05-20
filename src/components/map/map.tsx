@@ -1,16 +1,32 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useRef } from 'react';
-import { ContactsMapParam, MapParam } from '../../const';
+import { AppRoute, ContactsMapParam, MapParam } from '../../const';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../store';
+import { getQuestPlaces } from '../../store/booking-data/booking-data-selectors';
 
-export default function Map() {
+type MapProps = {
+  height: string;
+}
+
+export default function Map({height}: MapProps) {
+
+  const location = useLocation();
 
   const mapRef = useRef(null);
   const isRenderedRef = useRef(false);
+  const questPlaces = useAppSelector(getQuestPlaces);
 
   const activeMapIcon = leaflet.icon({
-    iconUrl: 'img/svg/pin-active.svg',
+    iconUrl: '/img/svg/pin-active.svg',
+    iconSize: [22, 42],
+    iconAnchor: [11, 42],
+  });
+
+  const defaultMapIcon = leaflet.icon({
+    iconUrl: '/img/svg/pin-default.svg',
     iconSize: [22, 42],
     iconAnchor: [11, 42],
   });
@@ -18,6 +34,23 @@ export default function Map() {
   useEffect(() => {
 
     if (mapRef.current !== null && !isRenderedRef.current) {
+
+      const markers = (map: leaflet.Map) => {
+        if (location.pathname === AppRoute.Contacts) {
+          return leaflet
+            .marker(ContactsMapParam, {
+              icon: activeMapIcon
+            }).addTo(map);
+        }
+        questPlaces.map((place) => leaflet.marker(
+          {
+            lat: Number(place.location.coords[0]),
+            lng: Number(place.location.coords[1]),
+          }, {
+            icon: activeMapIcon
+          }).addTo(map)
+        );
+      };
 
       const mapOptions = {
         center: {lat: MapParam.latitude, lng: MapParam.longitude},
@@ -35,17 +68,14 @@ export default function Map() {
         )
         .addTo(cityMap);
 
-      leaflet
-        .marker(ContactsMapParam, {
-          icon: activeMapIcon
-        }).addTo(cityMap);
+      markers(cityMap);
 
       isRenderedRef.current = true;
     }
-  }, [mapRef, activeMapIcon]);
+  }, [mapRef, activeMapIcon, defaultMapIcon, questPlaces, location]);
 
   return (
-    <div className="map__container" style={{height: '370px'}} ref={mapRef}></div>
+    <div className="map__container" style={{height: height}} ref={mapRef}></div>
   );
 }
 

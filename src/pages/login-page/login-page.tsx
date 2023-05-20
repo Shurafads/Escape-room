@@ -1,7 +1,41 @@
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
+import { FormEvent, useRef } from 'react';
+import { loginAction } from '../../store/api-action';
+import { TAuthData } from '../../types/auth-data';
+
 
 export default function LoginPage() {
+
+  const mailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useAppDispatch();
+
+  const authStatus = useAppSelector(getAuthorizationStatus);
+
+  if (authStatus === AuthorizationStatus.Auth) {
+    return (
+      <Navigate to={AppRoute.Main} />
+    );
+  }
+
+  const onSubmit = (authData: TAuthData) => {
+    dispatch(loginAction(authData));
+  };
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    if (mailRef.current && passwordRef.current !== null) {
+      onSubmit({
+        email: mailRef.current.value,
+        password: passwordRef.current.value,
+      });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -16,17 +50,33 @@ export default function LoginPage() {
         </div>
         <div className="container container--size-l">
           <div className="login__form">
-            <form className="login-form" action="https://echo.htmlacademy.ru/" method="post">
+            <form className="login-form" action="https://echo.htmlacademy.ru/" method="post" onSubmit={handleFormSubmit}>
               <div className="login-form__inner-wrapper">
                 <h1 className="title title--size-s login-form__title">Вход</h1>
                 <div className="login-form__inputs">
                   <div className="custom-input login-form__input">
                     <label className="custom-input__label" htmlFor="email">E&nbsp;&ndash;&nbsp;mail</label>
-                    <input type="email" id="email" name="email" placeholder="Адрес электронной почты" required/>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Адрес электронной почты"
+                      ref={mailRef}
+                      required
+                    />
                   </div>
                   <div className="custom-input login-form__input">
                     <label className="custom-input__label" htmlFor="password">Пароль</label>
-                    <input type="password" id="password" name="password" placeholder="Пароль" required/>
+                    <input
+                      type="text"
+                      id="password"
+                      name="password"
+                      placeholder="Пароль"
+                      pattern="(?=.*\d)(?=.*[A-Za-zA-Яа-яЁё]).{3,}"
+                      title="Пароль должен содержать как минимум три символа включающих букву и цифру"
+                      ref={passwordRef}
+                      required
+                    />
                   </div>
                 </div>
                 <button className="btn btn--accent btn--general login-form__submit" type="submit">Войти</button>
@@ -38,7 +88,7 @@ export default function LoginPage() {
                     <use xlinkHref="#icon-tick"></use>
                   </svg>
                 </span>
-                <span className="custom-checkbox__label">Я&nbsp;согласен с
+                <span className="custom-checkbox__label">Я&nbsp;согласен с&nbsp;
                   <Link className="link link--active-silver link--underlined" to="#">правилами обработки персональных данных</Link>
                   &nbsp;и пользовательским соглашением
                 </span>
