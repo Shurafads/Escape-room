@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { TQuestPlaces } from '../../types/quest-places';
+import BookingSelection from '../booking-selector/booking-selector';
 
-export default function BookingForm() {
+type BookingFormProps = {
+  currentPlace: TQuestPlaces;
+}
+
+export default function BookingForm({currentPlace}: BookingFormProps) {
 
   return (
     <form className="booking-form" action="https://echo.htmlacademy.ru/" method="post">
@@ -9,6 +15,7 @@ export default function BookingForm() {
         <fieldset className="booking-form__date-section">
           <legend className="booking-form__date-title">Сегодня</legend>
           <div className="booking-form__date-inner-wrapper">
+            {currentPlace.slots.today.map((slot) => <BookingSelection key={slot.time} day={'today'} time={slot.time} isAvivable={slot.isAvailable}/>)}
             <label className="custom-radio booking-form__date">
               <input type="radio" id="today9h45m" name="date" required value="today9h45m"/>
               <span className="custom-radio__label">9:45</span>

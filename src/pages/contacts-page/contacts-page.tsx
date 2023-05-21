@@ -48,7 +48,9 @@ export default function ContactsPage() {
             </dl>
             <div className="contacts__map">
               <div className="map">
-                <Map height={'370px'}/>
+                <div className="map__container">
+                  <Map height={'370px'}/>
+                </div>
               </div>
             </div>
           </div>

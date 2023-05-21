@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { fetchBookingQuestAction } from '../../store/api-action';
 import BookingForm from '../../components/booking-form/booking-form';
 import Map from '../../components/map/map';
-import { isLoadingPlaces } from '../../store/booking-data/booking-data-selectors';
+import { getQuestPlaces, isLoadingPlaces } from '../../store/booking-data/booking-data-selectors';
 
 export default function BookingPage() {
 
@@ -13,6 +13,7 @@ export default function BookingPage() {
 
   const currentQuest = useAppSelector(getQuestInfo);
   const isLoading = useAppSelector(isLoadingPlaces);
+  const questPlaces = useAppSelector(getQuestPlaces);
 
   useEffect(() => {
     if (currentQuest) {
@@ -26,7 +27,7 @@ export default function BookingPage() {
   if (isLoading) {
     return null;
   }
-
+  console.log(questPlaces);
   return (
     <>
       <Helmet>
@@ -53,7 +54,7 @@ export default function BookingPage() {
               <p className="booking-map__address">Вы&nbsp;выбрали: наб. реки Карповки&nbsp;5, лит&nbsp;П, м. Петроградская</p>
             </div>
           </div>
-          <BookingForm />
+          {/* <BookingForm /> */}
         </div>
       </main>
     </>
