@@ -4,6 +4,7 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { logoutAction } from '../../store/api-action';
+import { removeReservationList } from '../../store/reservation-data/reservation-data';
 
 export default function Header() {
 
@@ -16,6 +17,7 @@ export default function Header() {
   const handleOutClick = () => {
     if (authStatus === AuthorizationStatus.Auth) {
       dispatch(logoutAction());
+      dispatch(removeReservationList());
     }
   };
 

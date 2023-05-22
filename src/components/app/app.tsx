@@ -25,10 +25,6 @@ function App(): JSX.Element {
         <div className="wrapper">
           <Header />
           <Routes>
-            <Route path={AppRoute.Main} element={<MainPage />}/>
-            <Route path={AppRoute.Contacts} element={<ContactsPage />}/>
-            <Route path={AppRoute.Login} element={<LoginPage />}/>
-            <Route path={AppRoute.Quest} element={<QuestPage />}/>
             <Route
               path={AppRoute.MyQuests}
               element={
@@ -46,6 +42,10 @@ function App(): JSX.Element {
               }
             />
             <Route path='*' element={<NotFoundPage />}/>
+            <Route path={AppRoute.Main} element={<MainPage />}/>
+            <Route path={AppRoute.Contacts} element={<ContactsPage />}/>
+            <Route path={AppRoute.Login} element={<LoginPage />}/>
+            <Route path={AppRoute.Quest} element={<QuestPage />}/>
           </Routes>
           <Footer />
         </div>

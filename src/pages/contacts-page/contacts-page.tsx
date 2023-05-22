@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Map from '../../components/map/map';
 
 export default function ContactsPage() {
+
   return (
     <>
       <Helmet>

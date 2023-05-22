@@ -1,17 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { TBookingData } from '../../types/state';
-import { fetchBookingQuestAction } from '../api-action';
+import { bookingAction, fetchBookingQuestAction } from '../api-action';
+import { toast } from 'react-toastify';
 
 const initialState: TBookingData = {
   questPlaces: [],
   isLoadingPlaces: true,
+  isSendingBooking: true,
 };
 
 export const bookingData = createSlice({
   name: NameSpace.Booking,
   initialState,
-  reducers: {},
+  reducers: {
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchBookingQuestAction.pending, (state) => {
@@ -20,6 +23,20 @@ export const bookingData = createSlice({
       .addCase(fetchBookingQuestAction.fulfilled, (state, action) => {
         state.questPlaces = action.payload;
         state.isLoadingPlaces = false;
+      })
+      .addCase(fetchBookingQuestAction.rejected, (state, action) => {
+        state.isLoadingPlaces = false;
+      })
+      .addCase(bookingAction.pending, (state) => {
+        state.isSendingBooking = true;
+      })
+      .addCase(bookingAction.fulfilled, (state) => {
+        state.isSendingBooking = false;
+      })
+      .addCase(bookingAction.rejected, (state) => {
+        toast.error('Ошибка бронирования, попробуйте еще раз');
+        state.isSendingBooking = false;
       });
   }
 });
+

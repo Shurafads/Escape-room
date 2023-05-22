@@ -9,13 +9,15 @@ import { saveToken } from '../services/token';
 import { TUserData } from '../types/user-data';
 import { dropToken } from '../services/token';
 import { TQuestPlaces } from '../types/quest-places';
+import { TUserBooking } from '../types/user-booking';
+import { TReservationInfo } from '../types/reservation-info';
 
 export const fetchQuestsAction = createAsyncThunk<TQuest[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchQuests',
+  'quest/fetchQuests',
   async (_arg, {extra: api}) => {
 
     const {data} = await api.get<TQuest[]>(ApiRoute.Quests);
@@ -29,7 +31,7 @@ export const fetchQuestInfoAction = createAsyncThunk<TQuestInfo, string, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchQuestInfo',
+  'quest/fetchQuestInfo',
   async (questId, {extra: api}) => {
 
     const {data} = await api.get<TQuestInfo>(`${ApiRoute.Quests}/${questId}`);
@@ -43,7 +45,7 @@ export const fetchBookingQuestAction = createAsyncThunk<TQuestPlaces[], string, 
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchBookingQuestAction',
+  'quest/fetchBookingQuestAction',
   async (questId, {extra: api}) => {
 
     const {data} = await api.get<TQuestPlaces[]>(`${ApiRoute.Quests}/${questId}/booking`);
@@ -87,4 +89,41 @@ export const logoutAction = createAsyncThunk<void, undefined, {
 
     dropToken();
   },
+);
+
+export const bookingAction = createAsyncThunk<void, TUserBooking,
+  {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+  }>(
+    'booking/sendReview',
+    async ({date, time, contactPerson, phone, withChildren, peopleCount, placeId, questId}, {extra: api}) => {
+      await api.post<TUserBooking>(`${ApiRoute.Quests}/${questId}/booking`, {date, time, contactPerson, phone, withChildren, peopleCount, placeId});
+    },
+  );
+
+export const fetchReservationAction = createAsyncThunk<TReservationInfo[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'reservation/fetchReservationAction',
+  async (_arg, {extra: api}) => {
+
+    const {data} = await api.get<TReservationInfo[]>(ApiRoute.Reservation);
+
+    return data;
+  }
+);
+
+export const deleteReservationAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'reservation/deleteReservationAction',
+  async (reservationID, {extra: api}) => {
+    await api.delete<TReservationInfo[]>(`${ApiRoute.Reservation}/${reservationID}`);
+  }
 );

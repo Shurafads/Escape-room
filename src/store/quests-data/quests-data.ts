@@ -6,7 +6,7 @@ import { fetchQuestInfoAction, fetchQuestsAction } from '../api-action';
 const initialState: TQuestsData = {
   questsList: [],
   questsListCopy: [],
-  isLoadingOffersData: true,
+  isLoadingQuests: true,
   currentQuest: null,
   isLoadingQuestInfo: true,
 };
@@ -39,15 +39,15 @@ export const questsData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchQuestsAction.pending, (state) => {
-        state.isLoadingOffersData = true;
+        state.isLoadingQuests = true;
       })
       .addCase(fetchQuestsAction.fulfilled, (state, action) => {
         state.questsList = action.payload;
         state.questsListCopy = action.payload;
-        state.isLoadingOffersData = false;
+        state.isLoadingQuests = false;
       })
       .addCase(fetchQuestsAction.rejected, (state) => {
-        state.isLoadingOffersData = false;
+        state.isLoadingQuests = false;
       })
       .addCase(fetchQuestInfoAction.pending, (state) => {
         state.isLoadingQuestInfo = true;

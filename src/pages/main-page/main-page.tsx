@@ -1,14 +1,20 @@
 import { Helmet } from 'react-helmet-async';
 import CardList from '../../components/card-list/card-list';
 import FilterForm from '../../components/filter-form/filter-form';
-import { getQuests } from '../../store/quests-data/quests-data-selectors';
+import { getLoadingQuestsStatus, getQuests } from '../../store/quests-data/quests-data-selectors';
 import { useAppSelector } from '../../store';
 import NoCardList from '../../components/no-card-list/no-card-list';
+import LoadingPage from '../loading-page/loading-page';
 
 export default function MainPage() {
 
   const questsList = useAppSelector(getQuests);
+  const isLoading = useAppSelector(getLoadingQuestsStatus);
   const isQuests = questsList.length > 0;
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <>

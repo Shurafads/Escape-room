@@ -1,85 +1,119 @@
 import { Link } from 'react-router-dom';
 import { TQuestPlaces } from '../../types/quest-places';
 import BookingSelection from '../booking-selector/booking-selector';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { defaultUserBooking } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { bookingAction } from '../../store/api-action';
+import { getQuestInfo } from '../../store/quests-data/quests-data-selectors';
+
 
 type BookingFormProps = {
-  currentPlace: TQuestPlaces;
+  currentPlace: TQuestPlaces | null;
 }
 
 export default function BookingForm({currentPlace}: BookingFormProps) {
 
+  const dispatch = useAppDispatch();
+  const currentQuest = useAppSelector(getQuestInfo);
+  const [userBooking, setUserBooking] = useState(defaultUserBooking);
+
+  useEffect(() => {
+    setUserBooking(defaultUserBooking);
+    if (currentPlace) {
+      setUserBooking((prevState) => ({
+        ...prevState,
+        placeId: currentPlace.id,
+      }));
+    }
+    if (currentQuest) {
+      setUserBooking((prevState) => ({
+        ...prevState,
+        questId: currentQuest.id,
+      }));
+    }
+
+  }, [currentPlace, currentQuest]);
+
+  if (!currentPlace) {
+    return null;
+  }
+
+  const handleDateChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    const {dataset} = target;
+
+    if (dataset.date && dataset.time) {
+      const currentDate = dataset.date;
+      const currentTime = dataset.time;
+      setUserBooking((prevState) => ({
+        ...prevState,
+        date: currentDate,
+        time: currentTime,
+      }));
+    }
+  };
+
+  const handleUserInfoChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = target;
+
+    if (name === 'peopleCount') {
+      return setUserBooking((prevState) => ({
+        ...prevState,
+        [name]: Number(value),
+      }));
+    }
+    setUserBooking((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleChildrenInfoChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    setUserBooking((prevState) => ({
+      ...prevState,
+      withChildren: target.checked,
+    }));
+  };
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    dispatch(bookingAction(userBooking));
+  };
+
   return (
-    <form className="booking-form" action="https://echo.htmlacademy.ru/" method="post">
+    <form className="booking-form" action="https://echo.htmlacademy.ru/" method="post" onSubmit={handleFormSubmit}>
       <fieldset className="booking-form__section">
         <legend className="visually-hidden">Выбор даты и времени</legend>
         <fieldset className="booking-form__date-section">
           <legend className="booking-form__date-title">Сегодня</legend>
           <div className="booking-form__date-inner-wrapper">
-            {currentPlace.slots.today.map((slot) => <BookingSelection key={slot.time} day={'today'} time={slot.time} isAvivable={slot.isAvailable}/>)}
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="today9h45m" name="date" required value="today9h45m"/>
-              <span className="custom-radio__label">9:45</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="today15h00m" name="date" required value="today15h00m"/>
-              <span className="custom-radio__label">15:00</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="today17h30m" name="date" required value="today17h30m"/>
-              <span className="custom-radio__label">17:30</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="today19h30m" name="date" required value="today19h30m" disabled/>
-              <span className="custom-radio__label">19:30</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="today21h30m" name="date" required value="today21h30m"/>
-              <span className="custom-radio__label">21:30</span>
-            </label>
+            {currentPlace.slots.today.map((slot) => <BookingSelection key={`today${slot.time}`} day={'today'} time={slot.time} isAvivable={slot.isAvailable} onDateChange={handleDateChange}/>)}
           </div>
         </fieldset>
         <fieldset className="booking-form__date-section">
           <legend className="booking-form__date-title">Завтра</legend>
           <div className="booking-form__date-inner-wrapper">
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="tomorrow11h00m" name="date" required value="tomorrow11h00m"/>
-              <span className="custom-radio__label">11:00</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="tomorrow15h00m" name="date" required value="tomorrow15h00m" disabled/>
-              <span className="custom-radio__label">15:00</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="tomorrow17h30m" name="date" required value="tomorrow17h30m" disabled/>
-              <span className="custom-radio__label">17:30</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="tomorrow19h45m" name="date" required value="tomorrow19h45m"/>
-              <span className="custom-radio__label">19:45</span>
-            </label>
-            <label className="custom-radio booking-form__date">
-              <input type="radio" id="tomorrow21h30m" name="date" required value="tomorrow21h30m"/>
-              <span className="custom-radio__label">21:30</span>
-            </label>
+            {currentPlace.slots.tomorrow.map((slot) => <BookingSelection key={`tomorrow${slot.time}`} day={'tomorrow'} time={slot.time} isAvivable={slot.isAvailable} onDateChange={handleDateChange}/>)}
           </div>
         </fieldset>
       </fieldset>
       <fieldset className="booking-form__section">
         <legend className="visually-hidden">Контактная информация</legend>
         <div className="custom-input booking-form__input">
-          <label className="custom-input__label" htmlFor="name">Ваше имя</label>
-          <input type="text" id="name" name="name" placeholder="Имя" required pattern="[А-Яа-яЁёA-Za-z'- ]{1,}"/>
+          <label className="custom-input__label" htmlFor="contactPerson">Ваше имя</label>
+          <input type="text" id="name" name="contactPerson" placeholder="Имя" required pattern="[А-Яа-яЁёA-Za-z'- ]{1,}" onChange={handleUserInfoChange}/>
         </div>
         <div className="custom-input booking-form__input">
-          <label className="custom-input__label" htmlFor="tel">Контактный телефон</label>
-          <input type="tel" id="tel" name="tel" placeholder="Телефон" required pattern="[0-9]{10,}"/>
+          <label className="custom-input__label" htmlFor="phone">Контактный телефон</label>
+          <input type="tel" id="tel" name="phone" placeholder="Телефон" required pattern="[0-9]{10,}" onChange={handleUserInfoChange}/>
         </div>
         <div className="custom-input booking-form__input">
-          <label className="custom-input__label" htmlFor="person">Количество участников</label>
-          <input type="number" id="person" name="person" placeholder="Количество участников" required/>
+          <label className="custom-input__label" htmlFor="peopleCount">Количество участников</label>
+          <input type="number" id="person" name="peopleCount" placeholder="Количество участников" required onChange={handleUserInfoChange}/>
         </div>
         <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--children">
-          <input type="checkbox" id="children" name="children"/>
+          <input type="checkbox" id="children" name="children" onChange={handleChildrenInfoChange}/>
           <span className="custom-checkbox__icon">
             <svg width="20" height="17" aria-hidden="true">
               <use xlinkHref="#icon-tick"></use>
