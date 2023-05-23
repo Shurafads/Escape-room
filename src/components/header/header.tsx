@@ -8,17 +8,13 @@ import { removeReservationList } from '../../store/reservation-data/reservation-
 
 export default function Header() {
 
-  const authStatus = useAppSelector(getAuthorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  const isLoginPage = location.pathname === AppRoute.Login;
-
   const handleOutClick = () => {
-    if (authStatus === AuthorizationStatus.Auth) {
-      dispatch(logoutAction());
-      dispatch(removeReservationList());
-    }
+    dispatch(logoutAction());
+    dispatch(removeReservationList());
   };
 
   return (
@@ -34,7 +30,7 @@ export default function Header() {
               <NavLink className="link" to={AppRoute.Contacts}>Контакты</NavLink>
             </li>
             {
-              authStatus === AuthorizationStatus.Auth &&
+              authorizationStatus === AuthorizationStatus.Auth &&
               <li className="main-nav__item">
                 <NavLink className="link" to={AppRoute.MyQuests}>Мои бронирования</NavLink>
               </li>
@@ -42,15 +38,11 @@ export default function Header() {
           </ul>
         </nav>
         <div className="header__side-nav">
-          {!isLoginPage &&
-            <Link
-              className="btn btn--accent header__side-item"
-              to={AppRoute.Login}
-              onClick={handleOutClick}
-            >
-              {authStatus === AuthorizationStatus.Auth ? 'Выйти' : 'Войти'}
-            </Link>}
-          <Link className="link header__side-item header__phone-link" to="tel:88003335599">8 (000) 111-11-11</Link>
+          {authorizationStatus === AuthorizationStatus.Auth &&
+            <Link className="btn btn--accent header__side-item" to="#" onClick={handleOutClick}>Выйти</Link>}
+          {authorizationStatus === AuthorizationStatus.NoAuth && location.pathname !== AppRoute.Login &&
+            <Link className="btn header__side-item header__login-btn" to="/login">Вход</Link>}
+          <a className="link header__side-item header__phone-link" href="tel:88003335599">8 (000) 111-11-11</a>
         </div>
       </div>
     </header>

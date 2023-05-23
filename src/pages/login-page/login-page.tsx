@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
@@ -13,7 +13,7 @@ export default function LoginPage() {
   const mailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const authStatus = useAppSelector(getAuthorizationStatus);
 
   if (authStatus === AuthorizationStatus.Auth) {
@@ -24,6 +24,7 @@ export default function LoginPage() {
 
   const onSubmit = (authData: TAuthData) => {
     dispatch(loginAction(authData));
+    navigate(-1);
   };
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
