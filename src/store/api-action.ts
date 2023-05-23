@@ -4,7 +4,7 @@ import {AppDispatch, State } from '../types/state';
 import { ApiRoute } from '../const';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TQuestInfo } from '../types/quests-info';
-import { TAuthData } from '../types/auth-data';
+import { TAuthorizationData } from '../types/auth-data';
 import { saveToken } from '../services/token';
 import { TUserData } from '../types/user-data';
 import { dropToken } from '../services/token';
@@ -65,7 +65,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const loginAction = createAsyncThunk<void, TAuthData, {
+export const loginAction = createAsyncThunk<void, TAuthorizationData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;

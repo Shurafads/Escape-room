@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const initialState: TUserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
-  isExpectingAuthStatus: true,
+  isExpectingAuthorizationStatus: true,
 };
 
 export const userProcess = createSlice({
@@ -16,15 +16,15 @@ export const userProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.pending, (state) => {
-        state.isExpectingAuthStatus = true;
+        state.isExpectingAuthorizationStatus = true;
       })
       .addCase(checkAuthAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
-        state.isExpectingAuthStatus = false;
+        state.isExpectingAuthorizationStatus = false;
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
-        state.isExpectingAuthStatus = false;
+        state.isExpectingAuthorizationStatus = false;
       })
       .addCase(loginAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.Auth;

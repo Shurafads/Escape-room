@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { TQuest } from '../../types/quests';
 import { TReservationInfo } from '../../types/reservation-info';
-import { questDate, questLevel } from '../../const';
+import { QuestDate, QuestLevel } from '../../const';
 import { useAppDispatch } from '../../store';
 import { deleteReservationAction, } from '../../store/api-action';
 import { changePlaces } from '../../store/reservation-data/reservation-data';
@@ -51,7 +51,7 @@ export default function Card({quest, reservedQuest}: CardProps) {
               <svg width="14" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-level"></use>
               </svg>
-              {questLevel[quest.level]}
+              {QuestLevel[quest.level]}
             </li>
           </ul>
         </div>
@@ -85,7 +85,7 @@ export default function Card({quest, reservedQuest}: CardProps) {
         <div className="quest-card__content">
           <div className="quest-card__info-wrapper">
             <Link className="quest-card__link" to={`/quest/${reservedQuest.quest.id}`}>{reservedQuest.quest.title}</Link>
-            <span className="quest-card__info">{questDate[reservedQuest.date]},&nbsp;{reservedQuest.time}. {reservedQuest.location.address}</span>
+            <span className="quest-card__info">{QuestDate[reservedQuest.date]},&nbsp;{reservedQuest.time}. {reservedQuest.location.address}</span>
           </div>
           <ul className="tags quest-card__tags">
             <li className="tags__item">
@@ -97,7 +97,7 @@ export default function Card({quest, reservedQuest}: CardProps) {
               <svg width="14" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-level"></use>
               </svg>
-              {questLevel[reservedQuest.quest.level]}
+              {QuestLevel[reservedQuest.quest.level]}
             </li>
           </ul>
           <button className="btn btn--accent btn--secondary quest-card__btn" type="button" onClick={handleCancelClick}>Отменить</button>

@@ -7,16 +7,16 @@ export enum AppRoute {
   Quest = '/quest/:id',
 }
 
-export const CityLocation = {
-  latitude: 59.939099,
-  longitude: 30.315877,
-  zoom: 10,
-} as const;
+export enum CityLocation {
+  latitude = 59.939099,
+  longitude = 30.315877,
+  zoom = 10,
+}
 
-export const ContactsLocation = {
-  lat: 59.968322,
-  lng: 30.317359
-} as const;
+export enum ContactsLocation {
+  lat = 59.968322,
+  lng = 30.317359
+}
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -38,31 +38,31 @@ export enum ApiRoute {
   Reservation = '/reservation',
 }
 
-export const QuestType = {
-  adventure: 'Приключения',
-  horror: 'Ужасы',
-  mystic: 'Мистика',
-  detective: 'Детектив',
-  'Sci-fi': 'Sci-fi',
-};
+export enum QuestType {
+  adventure = 'Приключения',
+  horror = 'Ужасы',
+  mystic = 'Мистика',
+  detective = 'Детектив',
+  'Sci-fi' = 'Sci-fi',
+}
 
-export const questTheme: { [key: string]: string } = {
+export const QuestTheme: { [key: string]: string } = {
   adventure: 'Приключения',
   horror: 'Ужасы',
   mystic: 'Мистика',
   detective: 'Детектив',
   'sci-fi': 'Sci-fi',
-};
+} as const;
 
-export const questLevel: { [key: string]: string } = {
+export const QuestLevel: { [key: string]: string } = {
   easy: 'Легкий',
   medium: 'Средний',
   hard: 'Сложный',
-};
+} as const;
 
-export const questDate: { [key: string]: string } = {
+export const QuestDate: { [key: string]: string } = {
   today: 'Сегодня',
   tomorrow: 'Завтра',
-};
+} as const;
 
 export const URL = 'https://grading.design.pages.academy/v1/escape-room/';

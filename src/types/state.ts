@@ -26,7 +26,7 @@ export type TQuestsData = {
 
 export type TUserProcess = {
   authorizationStatus: AuthorizationStatus;
-  isExpectingAuthStatus: boolean;
+  isExpectingAuthorizationStatus: boolean;
 }
 
 export type TReservationData = {

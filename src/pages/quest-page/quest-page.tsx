@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getLoadingQuestInfoStatus, getQuestInfo } from '../../store/quests-data/quests-data-selectors';
 import { fetchQuestInfoAction } from '../../store/api-action';
-import { questLevel, questTheme } from '../../const';
+import { QuestLevel, QuestTheme } from '../../const';
 import LoadingPage from '../loading-page/loading-page';
 
 export default function QuestPage() {
@@ -42,7 +42,7 @@ export default function QuestPage() {
             <h1 className="title title--size-l title--uppercase quest-page__title">{currentQuest.title}</h1>
             <p className="subtitle quest-page__subtitle">
               <span className="visually-hidden">Жанр:</span>
-              {questTheme[currentQuest.type]}
+              {QuestTheme[currentQuest.type]}
             </p>
             <ul className="tags tags--size-l quest-page__tags">
               <li className="tags__item">
@@ -54,7 +54,7 @@ export default function QuestPage() {
                 <svg width="14" height="14" aria-hidden="true">
                   <use xlinkHref="#icon-level"></use>
                 </svg>
-                {questLevel[currentQuest.level]}
+                {QuestLevel[currentQuest.level]}
               </li>
             </ul>
             <p className="quest-page__description">{currentQuest.description}</p>

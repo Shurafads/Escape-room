@@ -1,4 +1,4 @@
-export type TAuthData = {
+export type TAuthorizationData = {
   email: string;
   password: string;
 };

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
 import { FormEvent, useRef } from 'react';
 import { loginAction } from '../../store/api-action';
-import { TAuthData } from '../../types/auth-data';
+import { TAuthorizationData } from '../../types/auth-data';
 
 
 export default function LoginPage() {
@@ -14,15 +14,15 @@ export default function LoginPage() {
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authStatus = useAppSelector(getAuthorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  if (authStatus === AuthorizationStatus.Auth) {
+  if (authorizationStatus === AuthorizationStatus.Auth) {
     return (
       <Navigate to={AppRoute.Main} />
     );
   }
 
-  const onSubmit = (authData: TAuthData) => {
+  const onSubmit = (authData: TAuthorizationData) => {
     dispatch(loginAction(authData));
     navigate(-1);
   };

@@ -17,7 +17,7 @@ import { useAppSelector } from '../../store';
 
 function App(): JSX.Element {
 
-  const authStatus = useAppSelector(getAuthorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <BrowserRouter>
@@ -28,7 +28,7 @@ function App(): JSX.Element {
             <Route
               path={AppRoute.MyQuests}
               element={
-                <PrivateRoute authorizationStatus={authStatus}>
+                <PrivateRoute authorizationStatus={authorizationStatus}>
                   <MyQuestsPage />
                 </PrivateRoute>
               }
@@ -36,7 +36,7 @@ function App(): JSX.Element {
             <Route
               path={AppRoute.Booking}
               element={
-                <PrivateRoute authorizationStatus={authStatus}>
+                <PrivateRoute authorizationStatus={authorizationStatus}>
                   <BookingPage />
                 </PrivateRoute>
               }
