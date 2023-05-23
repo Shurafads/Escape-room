@@ -46,17 +46,6 @@ export const QuestType = {
   'Sci-fi': 'Sci-fi',
 };
 
-export const defaultUserBooking = {
-  date: '',
-  time: '',
-  contactPerson: '',
-  phone: '',
-  withChildren: false,
-  peopleCount: 0,
-  placeId: '',
-  questId: ''
-};
-
 export const questTheme: { [key: string]: string } = {
   adventure: 'Приключения',
   horror: 'Ужасы',

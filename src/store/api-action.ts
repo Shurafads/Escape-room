@@ -9,7 +9,7 @@ import { saveToken } from '../services/token';
 import { TUserData } from '../types/user-data';
 import { dropToken } from '../services/token';
 import { TQuestPlaces } from '../types/quest-places';
-import { TUserBooking } from '../types/user-booking';
+import { TBookingForm } from '../types/user-booking';
 import { TReservationInfo } from '../types/reservation-info';
 
 export const fetchQuestsAction = createAsyncThunk<TQuest[], undefined, {
@@ -91,7 +91,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const bookingAction = createAsyncThunk<void, TUserBooking,
+export const bookingAction = createAsyncThunk<void, TBookingForm,
   {
   dispatch: AppDispatch;
   state: State;
@@ -99,7 +99,7 @@ export const bookingAction = createAsyncThunk<void, TUserBooking,
   }>(
     'booking/sendReview',
     async ({date, time, contactPerson, phone, withChildren, peopleCount, placeId, questId}, {extra: api}) => {
-      await api.post<TUserBooking>(`${ApiRoute.Quests}/${questId}/booking`, {date, time, contactPerson, phone, withChildren, peopleCount, placeId});
+      await api.post<TBookingForm>(`${ApiRoute.Quests}/${questId}/booking`, {date, time, contactPerson, phone, withChildren, peopleCount, placeId});
     },
   );
 

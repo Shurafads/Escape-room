@@ -40,10 +40,13 @@ export default function BookingPage() {
     }
   }, [params.id, dispatch]);
 
-  if (!currentQuest || isLoadingPlaces || isLoadingQuestInfoStatus) {
+  if (!currentQuest) {
     return <LoadingPage />;
   }
 
+  if (isLoadingQuestInfoStatus || isLoadingPlaces) {
+    return <LoadingPage />;
+  }
   const handleMarkerClick = (place: TQuestPlaces) => {
     setCurrentPlace(place);
   };

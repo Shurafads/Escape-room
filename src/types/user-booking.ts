@@ -1,4 +1,4 @@
-export type TUserBooking = {
+export type TBookingForm = {
   date: string;
   time: string;
   contactPerson: string;

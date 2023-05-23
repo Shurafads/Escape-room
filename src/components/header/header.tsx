@@ -45,7 +45,7 @@ export default function Header() {
           {!isLoginPage &&
             <Link
               className="btn btn--accent header__side-item"
-              to={authStatus === AuthorizationStatus.Auth ? AppRoute.Main : AppRoute.Login}
+              to={AppRoute.Login}
               onClick={handleOutClick}
             >
               {authStatus === AuthorizationStatus.Auth ? 'Выйти' : 'Войти'}
