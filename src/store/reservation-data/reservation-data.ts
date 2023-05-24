@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { TReservationData } from '../../types/state';
 import { fetchReservationAction } from '../api-action';
+import { toast } from 'react-toastify';
 
 const initialState: TReservationData = {
   reservationList: [],
@@ -32,6 +33,7 @@ export const reservationData = createSlice({
         state.isReservationsLoading = false;
       })
       .addCase(fetchReservationAction.rejected, (state) => {
+        toast.error('Не удалось загрузить данные по забронированным квестам, попробуйте позже');
         state.isReservationsLoading = false;
       });
   }

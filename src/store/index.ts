@@ -3,7 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, State } from '../types/state';
 import { createApi } from '../services/api';
 import { rootReducer } from './root-reducer';
-
+import { redirect } from './middlewares/redirect';
 const api = createApi();
 
 const store = configureStore({
@@ -13,7 +13,7 @@ const store = configureStore({
       thunk: {
         extraArgument: api,
       }
-    })
+    }).concat(redirect),
 });
 
 const useAppDispatch = () => useDispatch<AppDispatch>();

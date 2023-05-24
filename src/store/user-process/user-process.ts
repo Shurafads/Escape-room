@@ -30,7 +30,7 @@ export const userProcess = createSlice({
         state.authorizationStatus = AuthorizationStatus.Auth;
       })
       .addCase(loginAction.rejected, () => {
-        toast.error('Whoops, authorization error, please try again');
+        toast.error('Ошибка авторизации, попробуйте еще раз');
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;

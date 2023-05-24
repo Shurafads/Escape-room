@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { TFilter, TQuestsData } from '../../types/state';
 import { fetchQuestInfoAction, fetchQuestsAction } from '../api-action';
+import { toast } from 'react-toastify';
 
 const initialState: TQuestsData = {
   questsList: [],
@@ -48,6 +49,7 @@ export const questsData = createSlice({
       })
       .addCase(fetchQuestsAction.rejected, (state) => {
         state.isLoadingQuests = false;
+        toast.error('Не удалось загрузить данные по квестам, попробуйте позже');
       })
       .addCase(fetchQuestInfoAction.pending, (state) => {
         state.isLoadingQuestInfo = true;

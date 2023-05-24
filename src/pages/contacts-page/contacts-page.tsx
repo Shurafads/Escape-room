@@ -1,8 +1,20 @@
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Map from '../../components/map/map';
+import { useHistoryRedirect } from '../../hooks/use-history-redirect';
+import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
+import { useAppSelector } from '../../store';
+import { AuthorizationStatus } from '../../const';
 
 export default function ContactsPage() {
+  const location = useLocation();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const { saveUrl } = useHistoryRedirect();
+
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
+    saveUrl(location.pathname);
+  }
 
   return (
     <>

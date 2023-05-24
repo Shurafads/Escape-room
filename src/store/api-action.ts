@@ -1,7 +1,7 @@
 import {AxiosInstance} from 'axios';
 import { TQuest } from '../types/quests';
 import {AppDispatch, State } from '../types/state';
-import { ApiRoute } from '../const';
+import { ApiRoute, AppRoute } from '../const';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TQuestInfo } from '../types/quests-info';
 import { TAuthorizationData } from '../types/auth-data';
@@ -11,6 +11,7 @@ import { dropToken } from '../services/token';
 import { TQuestPlaces } from '../types/quest-places';
 import { TBookingForm } from '../types/user-booking';
 import { TReservationInfo } from '../types/reservation-info';
+import { redirectToRoute } from './action';
 
 export const fetchQuestsAction = createAsyncThunk<TQuest[], undefined, {
   dispatch: AppDispatch;
@@ -73,7 +74,6 @@ export const loginAction = createAsyncThunk<void, TAuthorizationData, {
   'user/loginAction',
   async ({email, password}, {extra: api}) => {
     const {data: {token}} = await api.post<TUserData>(ApiRoute.Login, {email, password});
-
     saveToken(token);
   },
 );
@@ -86,7 +86,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   'user/logoutAction',
   async (_arg, {extra: api}) => {
     await api.delete<TUserData>(ApiRoute.Login);
-
     dropToken();
   },
 );
@@ -98,8 +97,9 @@ export const bookingAction = createAsyncThunk<void, TBookingForm,
   extra: AxiosInstance;
   }>(
     'booking/sendReview',
-    async ({date, time, contactPerson, phone, withChildren, peopleCount, placeId, questId}, {extra: api}) => {
+    async ({date, time, contactPerson, phone, withChildren, peopleCount, placeId, questId}, {dispatch, extra: api}) => {
       await api.post<TBookingForm>(`${ApiRoute.Quests}/${questId}/booking`, {date, time, contactPerson, phone, withChildren, peopleCount, placeId});
+      dispatch(redirectToRoute(AppRoute.MyQuests));
     },
   );
 

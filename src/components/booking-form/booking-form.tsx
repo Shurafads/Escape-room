@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { TQuestPlaces } from '../../types/quest-places';
 import BookingSelection from '../booking-selector/booking-selector';
 import { ChangeEvent, useState } from 'react';
@@ -8,7 +8,6 @@ import { getQuestInfo } from '../../store/quests-data/quests-data-selectors';
 import { useForm } from 'react-hook-form';
 import { TBookingForm } from '../../types/user-booking';
 import LoadingPage from '../../pages/loading-page/loading-page';
-import { AppRoute } from '../../const';
 
 type BookingFormProps = {
   currentPlace: TQuestPlaces | null;
@@ -17,7 +16,6 @@ type BookingFormProps = {
 export default function BookingForm({currentPlace}: BookingFormProps) {
 
   const dispatch = useAppDispatch();
-  const redirect = useNavigate();
 
   const {
     register,
@@ -56,7 +54,6 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
       questId: currentQuest.id,
     };
     dispatch(bookingAction(bookingInformation));
-    redirect(AppRoute.MyQuests);
   });
 
   return (

@@ -1,19 +1,29 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getLoadingQuestInfoStatus, getQuestInfo } from '../../store/quests-data/quests-data-selectors';
 import { fetchQuestInfoAction } from '../../store/api-action';
-import { QuestLevel, QuestTheme } from '../../const';
+import { AuthorizationStatus, QuestLevel, QuestTheme } from '../../const';
 import LoadingPage from '../loading-page/loading-page';
+import { useHistoryRedirect } from '../../hooks/use-history-redirect';
+import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
 
 export default function QuestPage() {
 
   const params = useParams();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const currentQuest = useAppSelector(getQuestInfo);
   const isLoading = useAppSelector(getLoadingQuestInfoStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const { saveUrl } = useHistoryRedirect();
+
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
+    saveUrl(location.pathname);
+  }
 
   useEffect(() => {
     let isMounted = true;

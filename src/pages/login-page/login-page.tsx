@@ -1,17 +1,20 @@
 import { Helmet } from 'react-helmet-async';
-import { Link, Navigate } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { Link } from 'react-router-dom';
+import { AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
 import { loginAction } from '../../store/api-action';
 import { TAuthorizationData } from '../../types/auth-data';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useHistoryRedirect } from '../../hooks/use-history-redirect';
 
 
 export default function LoginPage() {
 
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const { returnUrl } = useHistoryRedirect();
 
   const {
     register,
@@ -21,11 +24,17 @@ export default function LoginPage() {
     },
   } = useForm<TAuthorizationData>({mode: 'onBlur'});
 
-  if (authorizationStatus === AuthorizationStatus.Auth) {
-    return (
-      <Navigate to={AppRoute.Main} />
-    );
-  }
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted && authorizationStatus === AuthorizationStatus.Auth) {
+      returnUrl();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [authorizationStatus, returnUrl]);
 
   const handleFormSubmit = handleSubmit((data) => {
     const userInformation = {

@@ -1,5 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+import { Route, Routes } from 'react-router-dom';
 import MainPage from '../../pages/main-page/main-page';
 import { AppRoute } from '../../const';
 import Footer from '../footer/footer';
@@ -12,45 +11,31 @@ import QuestPage from '../../pages/quest-page/quest-page';
 import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from '../private-route/private-route';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
-import { useAppSelector } from '../../store';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {
 
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <HelmetProvider>
         <div className="wrapper">
           <Header />
           <Routes>
-            <Route
-              path={AppRoute.MyQuests}
-              element={
-                <PrivateRoute authorizationStatus={authorizationStatus}>
-                  <MyQuestsPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path={AppRoute.Booking}
-              element={
-                <PrivateRoute authorizationStatus={authorizationStatus}>
-                  <BookingPage />
-                </PrivateRoute>
-              }
-            />
-            <Route path='*' element={<NotFoundPage />}/>
+            <Route element={<PrivateRoute />}>
+              <Route path={AppRoute.MyQuests} element={<MyQuestsPage />} />
+              <Route path={AppRoute.Booking} element={<BookingPage />} />
+            </Route>
             <Route path={AppRoute.Main} element={<MainPage />}/>
             <Route path={AppRoute.Contacts} element={<ContactsPage />}/>
             <Route path={AppRoute.Login} element={<LoginPage />}/>
             <Route path={AppRoute.Quest} element={<QuestPage />}/>
+            <Route path='*' element={<NotFoundPage />}/>
           </Routes>
           <Footer />
         </div>
       </HelmetProvider>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

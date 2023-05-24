@@ -5,12 +5,24 @@ import { getLoadingQuestsStatus, getQuests } from '../../store/quests-data/quest
 import { useAppSelector } from '../../store';
 import NoCardList from '../../components/no-card-list/no-card-list';
 import LoadingPage from '../loading-page/loading-page';
+import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
+import { useHistoryRedirect } from '../../hooks/use-history-redirect';
+import { AuthorizationStatus } from '../../const';
+import { useLocation } from 'react-router-dom';
 
 export default function MainPage() {
 
+  const location = useLocation();
   const questsList = useAppSelector(getQuests);
   const isLoading = useAppSelector(getLoadingQuestsStatus);
   const isQuests = questsList.length > 0;
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const { saveUrl } = useHistoryRedirect();
+
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
+    saveUrl(location.pathname);
+  }
 
   if (isLoading) {
     return <LoadingPage />;
