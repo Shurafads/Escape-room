@@ -6,8 +6,9 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { bookingAction } from '../../store/api-action';
 import { getQuestInfo } from '../../store/quests-data/quests-data-selectors';
 import { useForm } from 'react-hook-form';
-import { TBookingForm } from '../../types/user-booking';
+import { TBookingForm } from '../../types/booking';
 import LoadingPage from '../../pages/loading-page/loading-page';
+import { getSendingBookingStatus } from '../../store/booking-data/booking-data-selectors';
 
 type BookingFormProps = {
   currentPlace: TQuestPlaces | null;
@@ -30,7 +31,14 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
   });
 
   const currentQuest = useAppSelector(getQuestInfo);
+  const sendingBookingStatus = useAppSelector(getSendingBookingStatus);
   const [currentDate, setCurrentDate] = useState<string>('');
+
+  const isButtonDisabled = () => {
+    if (sendingBookingStatus) {
+      return true;
+    }
+  };
 
   if (!currentPlace || !currentQuest) {
     return <LoadingPage />;
@@ -134,7 +142,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
           <span className="custom-checkbox__label">Со&nbsp;мной будут дети</span>
         </label>
       </fieldset>
-      <button className="btn btn--accent btn--cta booking-form__submit" type="submit">Забронировать</button>
+      <button className="btn btn--accent btn--cta booking-form__submit" type="submit" disabled={isButtonDisabled()}>Забронировать</button>
       <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--agreement">
         <input type="checkbox" defaultValue='' id="id-order-agreement" name="user-agreement" required/>
         <span className="custom-checkbox__icon">

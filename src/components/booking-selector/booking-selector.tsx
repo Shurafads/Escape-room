@@ -1,5 +1,5 @@
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { TBookingForm } from '../../types/user-booking';
+import { TBookingForm } from '../../types/booking';
 import { ChangeEvent } from 'react';
 
 type BookingSelectionProps = {

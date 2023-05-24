@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const initialState: TBookingData = {
   questPlaces: [],
   isLoadingPlaces: true,
-  isSendingBooking: true,
+  isSendingBooking: false,
 };
 
 export const bookingData = createSlice({

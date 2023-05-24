@@ -9,7 +9,7 @@ import { saveToken } from '../services/token';
 import { TUserData } from '../types/user-data';
 import { dropToken } from '../services/token';
 import { TQuestPlaces } from '../types/quest-places';
-import { TBookingForm } from '../types/user-booking';
+import { TBookingForm } from '../types/booking';
 import { TReservationInfo } from '../types/reservation-info';
 import { redirectToRoute } from './action';
 
@@ -46,7 +46,7 @@ export const fetchBookingQuestAction = createAsyncThunk<TQuestPlaces[], string, 
   state: State;
   extra: AxiosInstance;
 }>(
-  'quest/fetchBookingQuestAction',
+  'booking/fetchBookingQuestAction',
   async (questId, {extra: api}) => {
 
     const {data} = await api.get<TQuestPlaces[]>(`${ApiRoute.Quests}/${questId}/booking`);
@@ -54,6 +54,19 @@ export const fetchBookingQuestAction = createAsyncThunk<TQuestPlaces[], string, 
     return data;
   }
 );
+
+export const bookingAction = createAsyncThunk<void, TBookingForm,
+  {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+  }>(
+    'booking/bookingAction',
+    async ({date, time, contactPerson, phone, withChildren, peopleCount, placeId, questId}, {dispatch, extra: api}) => {
+      await api.post<TBookingForm>(`${ApiRoute.Quests}/${questId}/booking`, {date, time, contactPerson, phone, withChildren, peopleCount, placeId});
+      dispatch(redirectToRoute(AppRoute.MyQuests));
+    },
+  );
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -89,19 +102,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
   },
 );
-
-export const bookingAction = createAsyncThunk<void, TBookingForm,
-  {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-  }>(
-    'booking/sendReview',
-    async ({date, time, contactPerson, phone, withChildren, peopleCount, placeId, questId}, {dispatch, extra: api}) => {
-      await api.post<TBookingForm>(`${ApiRoute.Quests}/${questId}/booking`, {date, time, contactPerson, phone, withChildren, peopleCount, placeId});
-      dispatch(redirectToRoute(AppRoute.MyQuests));
-    },
-  );
 
 export const fetchReservationAction = createAsyncThunk<TReservationInfo[], undefined, {
   dispatch: AppDispatch;

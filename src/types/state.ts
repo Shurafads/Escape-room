@@ -9,7 +9,6 @@ export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-
 export type TBookingData = {
   questPlaces: TQuestPlaces[];
   isLoadingPlaces: boolean;
@@ -35,4 +34,7 @@ export type TReservationData = {
   isReservationsLoading: boolean;
 }
 
-export type TFilter = {type: string; level: string}
+export type TFilter = {
+  type: string;
+  level: string;
+}

@@ -84,15 +84,15 @@ export default function LoginPage() {
                       type="text"
                       id="password"
                       placeholder="Пароль"
-                      pattern="(?=.*\d)(?=.*[A-Za-zA-Яа-яЁё]).{3,}"
                       title="Пароль должен содержать как минимум три символа включающих букву и цифру"
                       {...register('password', {
                         required: 'Поле обязательно для заполнения',
                         pattern: {
-                          value: /^(?=.*[a-zA-Zа-яА-Я])(?=.*\d)[a-zA-Zа-яА-Я\d]{3,}$/g,
+                          value: /^(?=.*[A-Za-zA-Яа-яЁё])(?=.*\d)[A-Za-zA-Яа-яЁё\d]{3,}$/g,
                           message: 'Пароль должен состоять минимум из 1 буквы и 1 цифры, не менее 3 символов'
                         }})}
                     />
+                    {errors.password && <span style={{color: '#f2890f'}}>{errors.password.message}</span>}
                   </div>
                 </div>
                 <button className="btn btn--accent btn--general login-form__submit" type="submit">Войти</button>
