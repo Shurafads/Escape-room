@@ -33,7 +33,7 @@ export const reservationData = createSlice({
         state.isReservationsLoading = false;
       })
       .addCase(fetchReservationAction.rejected, (state) => {
-        toast.error('Не удалось загрузить данные по забронированным квестам, попробуйте позже');
+        toast.error('Не удалось получить данные по забронированным квестам, попробуйте позже');
         state.isReservationsLoading = false;
       });
   }

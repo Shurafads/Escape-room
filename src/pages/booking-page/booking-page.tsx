@@ -62,7 +62,7 @@ export default function BookingPage() {
     return <LoadingPage />;
   }
 
-  if (isLoadingQuestInfoStatus || isLoadingPlaces) {
+  if (isLoadingQuestInfoStatus || isLoadingPlaces || !params.id) {
     return <LoadingPage />;
   }
   const handleMarkerClick = (place: TQuestPlaces) => {

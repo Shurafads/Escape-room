@@ -49,7 +49,7 @@ export const questsData = createSlice({
       })
       .addCase(fetchQuestsAction.rejected, (state) => {
         state.isLoadingQuests = false;
-        toast.error('Не удалось загрузить данные по квестам, попробуйте позже');
+        toast.error('Не удалось получить данные по квестам, попробуйте позже');
       })
       .addCase(fetchQuestInfoAction.pending, (state) => {
         state.isLoadingQuestInfo = true;
@@ -60,6 +60,7 @@ export const questsData = createSlice({
       })
       .addCase(fetchQuestInfoAction.rejected, (state) => {
         state.isLoadingQuestInfo = false;
+        toast.error('Не удалось получить данные по квесту, попробуйте позже');
       });
   }
 });

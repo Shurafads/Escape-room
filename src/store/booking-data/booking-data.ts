@@ -24,7 +24,8 @@ export const bookingData = createSlice({
         state.questPlaces = action.payload;
         state.isLoadingPlaces = false;
       })
-      .addCase(fetchBookingQuestAction.rejected, (state, action) => {
+      .addCase(fetchBookingQuestAction.rejected, (state) => {
+        toast.error('Не удалось получить данные по бронированию, попробуйте позже');
         state.isLoadingPlaces = false;
       })
       .addCase(bookingAction.pending, (state) => {
