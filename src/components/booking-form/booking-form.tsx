@@ -22,7 +22,6 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
   const {
     register,
     handleSubmit,
-    reset,
     formState: {
       errors,
     },
@@ -46,7 +45,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
   };
 
   const handleFormSubmit = handleSubmit((data) => {
-    const bookingInformation: TBookingForm = {
+    const bookingInformation = {
       date: currentDate,
       time: data.time,
       contactPerson: data.contactPerson,
@@ -58,7 +57,6 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
     };
     dispatch(bookingAction(bookingInformation));
     redirect(AppRoute.MyQuests);
-    reset();
   });
 
   return (
@@ -85,7 +83,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
           <input type="text" id="name" placeholder="Имя"
             {...register('contactPerson',
               {
-                required: 'Поле обязательно к заполнению',
+                required: 'Поле обязательно для заполнения',
                 minLength: {
                   value: 1,
                   message: 'Имя должно содержать не менее 1 символа'
@@ -103,7 +101,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
           <label className="custom-input__label" htmlFor="tel">Контактный телефон</label>
           <input type="tel" id="tel" placeholder="Телефон" defaultValue=''
             {...register('phone', {
-              required: 'Поле обязательно к заполнению',
+              required: 'Поле обязательно для заполнения',
               pattern: {
                 value: /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
                 message: 'Введите допустимый формат номера телефона (+7(000)000-00-00)'
@@ -116,7 +114,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
           <label className="custom-input__label" htmlFor="person">Количество участников</label>
           <input type="number" id="person" placeholder="Количество участников" defaultValue=''
             {...register('peopleCount', {
-              required: 'Поле обязательно к заполнению',
+              required: 'Поле обязательно для заполнения',
               min: {
                 value: currentQuest.peopleMinMax[0],
                 message: `Укажите другое количество участников, в данном квесте могут учатствовать от ${currentQuest.peopleMinMax[0]} до ${currentQuest.peopleMinMax[1]} человек`

@@ -1,20 +1,25 @@
 import { Helmet } from 'react-helmet-async';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
-import { FormEvent, useRef } from 'react';
 import { loginAction } from '../../store/api-action';
 import { TAuthorizationData } from '../../types/auth-data';
+import { useForm } from 'react-hook-form';
 
 
 export default function LoginPage() {
 
-  const mailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const {
+    register,
+    handleSubmit,
+    formState: {
+      errors,
+    },
+  } = useForm<TAuthorizationData>({mode: 'onBlur'});
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (
@@ -22,20 +27,13 @@ export default function LoginPage() {
     );
   }
 
-  const onSubmit = (authData: TAuthorizationData) => {
-    dispatch(loginAction(authData));
-    navigate(-1);
-  };
-
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    if (mailRef.current && passwordRef.current !== null) {
-      onSubmit({
-        email: mailRef.current.value,
-        password: passwordRef.current.value,
-      });
-    }
-  };
+  const handleFormSubmit = handleSubmit((data) => {
+    const userInformation = {
+      email: data.email,
+      password: data.password,
+    };
+    dispatch(loginAction(userInformation));
+  });
 
   return (
     <>
@@ -51,7 +49,7 @@ export default function LoginPage() {
         </div>
         <div className="container container--size-l">
           <div className="login__form">
-            <form className="login-form" action="https://echo.htmlacademy.ru/" method="post" onSubmit={handleFormSubmit}>
+            <form className="login-form" action="https://echo.htmlacademy.ru/" method="post" onSubmit={(evt) => void handleFormSubmit(evt)}>
               <div className="login-form__inner-wrapper">
                 <h1 className="title title--size-s login-form__title">Вход</h1>
                 <div className="login-form__inputs">
@@ -60,23 +58,31 @@ export default function LoginPage() {
                     <input
                       type="email"
                       id="email"
-                      name="email"
                       placeholder="Адрес электронной почты"
-                      ref={mailRef}
-                      required
+                      {...register('email', {
+                        required: 'Поле обязательно для заполнения',
+                        pattern: {
+                          value: /.+@.+\..+/i,
+                          message: 'Не верный формат электронной почты'
+                        }
+                      })}
                     />
+                    {errors.email && <span style={{color: '#f2890f'}}>{errors.email.message}</span>}
                   </div>
                   <div className="custom-input login-form__input">
                     <label className="custom-input__label" htmlFor="password">Пароль</label>
                     <input
                       type="text"
                       id="password"
-                      name="password"
                       placeholder="Пароль"
                       pattern="(?=.*\d)(?=.*[A-Za-zA-Яа-яЁё]).{3,}"
                       title="Пароль должен содержать как минимум три символа включающих букву и цифру"
-                      ref={passwordRef}
-                      required
+                      {...register('password', {
+                        required: 'Поле обязательно для заполнения',
+                        pattern: {
+                          value: /^(?=.*[a-zA-Zа-яА-Я])(?=.*\d)[a-zA-Zа-яА-Я\d]{3,}$/g,
+                          message: 'Пароль должен состоять минимум из 1 буквы и 1 цифры, не менее 3 символов'
+                        }})}
                     />
                   </div>
                 </div>
