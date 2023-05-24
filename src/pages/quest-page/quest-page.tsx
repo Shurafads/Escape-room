@@ -16,9 +16,15 @@ export default function QuestPage() {
   const isLoading = useAppSelector(getLoadingQuestInfoStatus);
 
   useEffect(() => {
-    if (params.id) {
+    let isMounted = true;
+
+    if (params.id && isMounted) {
       dispatch(fetchQuestInfoAction(params.id));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [params.id, dispatch]);
 
   if (!currentQuest || isLoading) {

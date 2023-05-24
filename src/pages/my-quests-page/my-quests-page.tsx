@@ -16,7 +16,15 @@ export default function MyQuestsPage() {
   const reservationList = useAppSelector(getReservationList);
 
   useEffect(() => {
-    dispatch(fetchReservationAction());
+    let isMounted = true;
+
+    if (isMounted) {
+      dispatch(fetchReservationAction());
+    }
+
+    return () => {
+      isMounted = false;
+    };
   },[dispatch]);
 
   if (isLoading) {

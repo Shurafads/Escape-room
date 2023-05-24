@@ -7,4 +7,5 @@ export type TBookingForm = {
   peopleCount: number;
   placeId: string;
   questId: string;
+  'user-agreement'?: string;
 };

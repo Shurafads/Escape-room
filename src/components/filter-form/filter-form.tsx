@@ -20,7 +20,15 @@ export default function FilterForm() {
   };
 
   useEffect(() => {
-    dispatch(filterQuestsAction(filter));
+    let isMounted = true;
+
+    if (isMounted) {
+      dispatch(filterQuestsAction(filter));
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [filter, dispatch]);
 
   return (

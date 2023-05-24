@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { TQuestPlaces } from '../../types/quest-places';
 import BookingSelection from '../booking-selector/booking-selector';
-import { MouseEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { bookingAction } from '../../store/api-action';
 import { getQuestInfo } from '../../store/quests-data/quests-data-selectors';
@@ -39,7 +39,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
     return <LoadingPage />;
   }
 
-  const handleDateChange = ({target}: MouseEvent<HTMLInputElement>) => {
+  const handleDateChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     if (target instanceof HTMLInputElement && target.dataset.date) {
       setCurrentDate(target.dataset.date);
     }
@@ -141,7 +141,7 @@ export default function BookingForm({currentPlace}: BookingFormProps) {
       </fieldset>
       <button className="btn btn--accent btn--cta booking-form__submit" type="submit">Забронировать</button>
       <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--agreement">
-        <input type="checkbox" defaultValue='' id="id-order-agreement" name="user-agreement" required />
+        <input type="checkbox" defaultValue='' id="id-order-agreement" name="user-agreement" required/>
         <span className="custom-checkbox__icon">
           <svg width="20" height="17" aria-hidden="true">
             <use xlinkHref="#icon-tick"></use>

@@ -23,21 +23,39 @@ export default function BookingPage() {
   const [currentPlace, setCurrentPlace] = useState<TQuestPlaces | null>(null);
 
   useEffect(() => {
-    if (currentQuest) {
+    let isMounted = true;
+
+    if (currentQuest && isMounted) {
       dispatch(fetchBookingQuestAction(currentQuest.id));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [currentQuest, dispatch]);
 
   useEffect(() => {
-    if (questPlaces) {
+    let isMounted = true;
+
+    if (questPlaces && isMounted) {
       setCurrentPlace(questPlaces[0]);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [questPlaces]);
 
   useEffect(() => {
-    if (params.id) {
+    let isMounted = true;
+
+    if (params.id && isMounted) {
       dispatch(fetchQuestInfoAction(params.id));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [params.id, dispatch]);
 
   if (!currentQuest) {
